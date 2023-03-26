@@ -18,7 +18,7 @@
       git:
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
-        force: true
+        force: yes
         update: yes
     - name: create service node-exporter
       template:
