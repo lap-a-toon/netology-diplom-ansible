@@ -10,6 +10,11 @@
       ansible.builtin.apt:
         name: nginx
         update_cache: yes
+    - name: Download site from repo
+      ansible.builtin.git:
+        repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
+        dest: /var/www/html
+        update: yes
     - name: create service node-exporter
       template:
         src: etc/systemd/system/node-exporter.service.j2
