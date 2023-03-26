@@ -32,6 +32,10 @@
       template:
         src: etc/systemd/system/prometheus.service.j2
         dest: /etc/systemd/system/prometheus.service
+    - name: Start service prometheus, in all cases
+      ansible.builtin.service:
+        name: prometheus.servce
+        state: reloaded
 - name: install node-exporter
   hosts: node-exporter
   become: true
@@ -53,4 +57,4 @@
     - name: Start service node-exporter, in all cases
       ansible.builtin.service:
         name: node-exporter.servce
-        state: started
+        state: reloaded
