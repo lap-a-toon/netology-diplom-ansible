@@ -67,3 +67,14 @@
       ansible.builtin.service:
         name: node-exporter.service
         state: restarted
+- name: install Nginx Log Exporter
+  hosts: web
+  become: true
+  tasks:
+    - name: Download Nginx Log Exporter
+      ansible.builtin.get_url:
+        url: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.2/prometheus-nginxlog-exporter_1.9.2_linux_amd64.deb
+        dest: prometheus-nginxlog-exporter.deb
+    - name: Install Nginx Log Exporter
+      ansible.builtin.apt:
+        deb: prometheus-nginxlog-exporter.deb
