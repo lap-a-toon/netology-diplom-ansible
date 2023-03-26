@@ -35,7 +35,7 @@
     - name: Start service prometheus, in all cases
       ansible.builtin.service:
         name: prometheus.service
-        state: reloaded
+        state: restarted
 - name: install node-exporter
   hosts: node-exporter
   become: true
