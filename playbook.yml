@@ -57,4 +57,4 @@
     - name: Start service node-exporter, in all cases
       ansible.builtin.service:
         name: node-exporter.service
-        state: reloaded
+        state: restarted
