@@ -23,7 +23,7 @@
         src: install_prometheus.sh.j2
         dest: install_prometheus.sh
     - name: run install script
-      command: sudo bash ./install_prometheus.sh
+      command: bash ./install_prometheus.sh
     - name: config prometheus
       template:
         src: etc/prometheus/prometheus.j2
