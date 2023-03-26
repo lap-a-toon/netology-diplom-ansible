@@ -78,3 +78,11 @@
     - name: Install Nginx Log Exporter
       ansible.builtin.apt:
         deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.2/prometheus-nginxlog-exporter_1.9.2_linux_amd64.deb
+    - name: Edit service prometheus-nginxlog-exporter
+      template:
+        src: etc/prometheus-nginxlog-exporter.hcl.j2
+        dest: /etc/prometheus-nginxlog-exporter.hcl
+    - name: Start service Nginx Log Exporter
+      ansible.builtin.service:
+        name: prometheus-nginxlog-exporter.service
+        state: restarted
