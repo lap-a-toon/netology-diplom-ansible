@@ -18,34 +18,12 @@
   hosts: prometheus
   become: true
   tasks:
-    - name: create user
-      command: sudo useradd --no-create-home --shell /bin/false prometheus
-    - name: download
-      command: wget https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
-    - name: unpack
-      command: tar xvfz prometheus-2.28.1.linux-amd64.tar.gz
-    - name: prepare 1
-      command: cd prometheus-2.28.1.linux-amd64
-    - name: prepare 2
-      command: mkdir /etc/prometheus
-    - name: prepare 3
-      command: mkdir /var/lib/prometheus
-    - name: prepare 4
-      command: cp ./prometheus promtool /usr/local/bin/
-    - name: prepare 5
-      command: cp -R ./console_libraries /etc/prometheus
-    - name: prepare 6
-      command: cp -R ./consoles /etc/prometheus
-    - name: prepare 7
-      command: cp ./prometheus.yml /etc/prometheus
-    - name: prepare 8
-      command: chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus
-    - name: prepare 9
-      command: chown prometheus:prometheus /usr/local/bin/prometheus
-    - name: prepare 10
-      command: chown prometheus:prometheus /usr/local/bin/promtool
-    - name: prepare 11
-      command: /usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries
+    - name: copy install script prometheus
+      template:
+        src: install_prometheus.sh.j2
+        dest: install_prometheus.sh
+    - name: run install script
+      command: ./install_prometheus.sh
     - name: config prometheus
       template:
         src: etc/prometheus/prometheus.j2
@@ -54,26 +32,14 @@
       template:
         src: etc/systemd/system/prometheus.service.j2
         dest: /etc/systemd/system/prometheus.service
-    - name: create service node-exporter
-      template:
-        src: etc/systemd/system/node-exporter.service.j2
-        dest: /etc/systemd/system/node-exporter.service
 - name: install node-exporter
   hosts: node-exporter
   become: true
   tasks:
-    - name: download node-exporter
-      command: wget https://github.com/prometheus/node_exporter/releases/download/v1.0.0/node_exporter-1.0.0.linux-amd64.tar.gz 
-    - name: unpack node-exporter
-      command: tar xvfz node_exporter-*.*-amd64.tar.gz
-    - name: prepare node-exporter 1
-      command: cd node_exporter-*.*-amd64
-    - name: prepare node-exporter 2
-      command: mkdir /etc/prometheus/node-exporter
-    - name: prepare node-exporter 3
-      command: cp -r ./* /etc/prometheus/node-exporter
-    - name: prepare node-exporter 4
-      command: chown -R prometheus:prometheus /etc/prometheus/node-exporter/
+    - name: create service node-exporter
+      template:
+        src: etc/systemd/system/node-exporter.service.j2
+        dest: /etc/systemd/system/node-exporter.service
     - name: Enable service node-exporter, in all cases
       ansible.builtin.service:
         name: node-exporter.servce
