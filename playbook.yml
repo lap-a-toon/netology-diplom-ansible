@@ -22,7 +22,7 @@
       template:
         src: install_prometheus.sh.j2
         dest: install_prometheus.sh
-    - name: run install script
+    - name: run install script prometheus
       command: bash ./install_prometheus.sh
     - name: config prometheus
       template:
@@ -36,6 +36,12 @@
   hosts: node-exporter
   become: true
   tasks:
+    - name: copy install script node-exporter
+      template:
+        src: install_node-exporter.sh.j2
+        dest: install_node-exporter.sh
+    - name: run install script node-exporter
+      command: bash ./install_node-exporter.sh
     - name: create service node-exporter
       template:
         src: etc/systemd/system/node-exporter.service.j2
