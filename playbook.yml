@@ -52,7 +52,7 @@
         dest: /etc/systemd/system/node-exporter.service
     - name: Enable service node-exporter, in all cases
       ansible.builtin.service:
-        name: node-exporter.servce
+        name: node-exporter.service
         enabled: yes
     - name: Start service node-exporter, in all cases
       ansible.builtin.service:
