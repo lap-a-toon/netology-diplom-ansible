@@ -34,7 +34,7 @@
         dest: /etc/systemd/system/prometheus.service
     - name: Start service prometheus, in all cases
       ansible.builtin.service:
-        name: prometheus.servce
+        name: prometheus.service
         state: reloaded
 - name: install node-exporter
   hosts: node-exporter
@@ -56,5 +56,5 @@
         enabled: yes
     - name: Start service node-exporter, in all cases
       ansible.builtin.service:
-        name: node-exporter.servce
+        name: node-exporter.service
         state: reloaded
