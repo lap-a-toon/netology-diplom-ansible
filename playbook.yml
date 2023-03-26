@@ -6,10 +6,10 @@
     - name: test
       debug:
         msg: "Ehlo!"
-    - name: install packages
+    - name: Update repositories cache and install "nginx" package
       ansible.builtin.apt:
         name: nginx
-        state: present
+        update_cache: yes
     - name: create service node-exporter
       template:
         src: etc/systemd/system/node-exporter.service.j2
