@@ -82,6 +82,10 @@
       template:
         src: etc/prometheus-nginxlog-exporter.hcl.j2
         dest: /etc/prometheus-nginxlog-exporter.hcl
+    - name: chmod nginx logs to 664
+      file:
+        path: /var/log/nginx/*
+        mode: 0644
     - name: Start service Nginx Log Exporter
       ansible.builtin.service:
         name: prometheus-nginxlog-exporter.service
