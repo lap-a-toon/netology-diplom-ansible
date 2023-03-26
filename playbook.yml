@@ -15,7 +15,7 @@
         - nginx
         - git
     - name: clear native nginx www folder
-      cmd: mv /var/www/html /var/www/html_orig
+      command: mv /var/www/html /var/www/html_orig
     - name: Download site from repo
       git:
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
