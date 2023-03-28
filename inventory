@@ -14,3 +14,6 @@ prometheus
 web-1
 web-2
 prometheus
+
+[grafana-hosts]
+grafana
