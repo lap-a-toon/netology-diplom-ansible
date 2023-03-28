@@ -101,9 +101,14 @@
       ansible.builtin.apt:
         pkg:
         - git
+    - name: Check if Grafana is installed
+      command: dpkg-query -l grafana
+      ignore_errors: True
+      register: grafana_deb_check
     - name: Install Grafana
       ansible.builtin.apt:
         deb: https://dl.grafana.com/oss/release/grafana_7.0.3_amd64.deb
+      when: grafana_deb_check.stderr.find('no packages found') != -1
     - name: Enable service Grafana
       ansible.builtin.service:
         name: grafana-server
