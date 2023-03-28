@@ -112,27 +112,19 @@
       ansible.builtin.service:
         name: grafana-server
         state: started
-    - uri:
-        url: http://localhost:3000/api/datasources/name/Prometheus
-        user: admin
-        password: admin
-        force_basic_auth: yes
-      register: grafana_prometheus
-      failed_when: false
-      changed_when: false
-    - name: Enable Prometheus Datasource in Grafana
-      uri:
-        url: http://localhost:3000/api/datasources
-        method: POST
-        user: admin
-        password: admin
-        body:
-          name: "Prometheus"
-          type: "prometheus"
-          url: "http://prometheus:9090"
-          access: "proxy"
-          isDefault: true
-        force_basic_auth: yes
-        status_code: 201
-        body_format: json
-      when: grafana_prometheus.status == 404
+    - http.query:
+      - name: http://localhost:3000/api/datasources
+      - method: POST
+      - username: admin
+      - password: admin
+      - data: |
+          {"name": "Prometheus",
+          "type": "prometheus",
+          "url": "http://prometheus:9090",
+          "access": "proxy",
+          "isDefault": true}
+      - header_list:
+        - 'Content-Type: application/json'
+      - status: 200
+      - unless:
+        - curl -f http://admin:admin@localhost:3000/api/datasources/name/Prometheus
