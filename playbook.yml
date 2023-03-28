@@ -106,7 +106,7 @@
         name: grafana-server
         state: started
     - name: Auth in Grafana-web-API
-    - uri:
+      uri:
         url: http://localhost:3000/api/datasources/name/Prometheus
         user: admin
         password: admin
