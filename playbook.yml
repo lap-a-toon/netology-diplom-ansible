@@ -117,7 +117,7 @@
       ds_url: http://prometheus:9090
       access: proxy
       tls_skip_verify: true
-      # additional_json_data:
-      #   httpHeaderName1: "Authorization"
-      # additional_secure_json_data:
-      #   httpHeaderValue1: "Bearer ihavenogroot"
+      additional_json_data:
+        httpHeaderName1: "Authorization"
+      additional_secure_json_data:
+        httpHeaderValue1: "Bearer ihavenogroot"
