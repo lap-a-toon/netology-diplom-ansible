@@ -62,10 +62,7 @@
     - name: Enable service node-exporter, in all cases
       ansible.builtin.service:
         name: node-exporter.service
-        enabled: yes
-    - name: Start service node-exporter, in all cases
-      ansible.builtin.service:
-        name: node-exporter.service
+        enabled: true
         state: restarted
 - name: install Nginx Log Exporter
   hosts: web
@@ -74,6 +71,7 @@
     - name: Install Nginx Log Exporter
       ansible.builtin.apt:
         deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.2/prometheus-nginxlog-exporter_1.9.2_linux_amd64.deb
+        state: present
     - name: Edit service prometheus-nginxlog-exporter
       template:
         src: etc/prometheus-nginxlog-exporter.hcl.j2
@@ -101,30 +99,25 @@
       ansible.builtin.apt:
         pkg:
         - git
-    - name: Check if Grafana is installed
-      command: dpkg-query -l grafana
-      ignore_errors: True
-      register: grafana_deb_check
     - name: Install Grafana
       ansible.builtin.apt:
         deb: https://dl.grafana.com/oss/release/grafana_7.0.3_amd64.deb
-      when: grafana_deb_check.stderr.find('no packages found') != -1
+        state: present
     - name: Enable service Grafana
       ansible.builtin.service:
         name: grafana-server
         enabled: true
-    - name: Start service Grafana
-      ansible.builtin.service:
-        name: grafana-server
         state: started
     - name: create prometheus datasource
       community.grafana.grafana_datasource:
         name: openshift_prometheus
+        grafana_user: "admin"
+        grafana_password: "admin"
         ds_type: prometheus
         ds_url: http://prometheus:9090
         access: proxy
         tls_skip_verify: true
-        additional_json_data:
-          httpHeaderName1: "Authorization"
-        additional_secure_json_data:
-          httpHeaderValue1: "Bearer ihavenogroot"
+        # additional_json_data:
+        #   httpHeaderName1: "Authorization"
+        # additional_secure_json_data:
+        #   httpHeaderValue1: "Bearer ihavenogroot"
