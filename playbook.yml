@@ -108,6 +108,11 @@
         name: grafana-server
         enabled: true
         state: started
+    - name: Check if Grafana is accessible
+      uri:
+        url: http://localhost:3000
+        method: GET
+        status_code: 200
     - name: create prometheus datasource
       community.grafana.grafana_datasource:
         name: prometheus
