@@ -153,6 +153,11 @@
       ansible.builtin.apt:
         pkg:
         - docker
+        - docker.io
+        - pip
+    - name: Install pip docker
+      ansible.builtin.pip:
+        name: docker
     - name: Restart a container
       community.docker.docker_container:
         # docker sebp/elk
