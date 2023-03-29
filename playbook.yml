@@ -158,6 +158,8 @@
     - name: Install pip docker
       ansible.builtin.pip:
         name: docker
+    - name: Обманываем Эластик и "накидываем" оперативки
+      command: sysctl -w vm.max_map_count=262144
     - name: Restart a container
       community.docker.docker_container:
         # docker sebp/elk
