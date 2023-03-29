@@ -170,10 +170,6 @@
         #devices:
         #- "/dev/sda:/dev/xvda:rwm"
         ports:
-        # Publish container port 9000 as host port 8080
         - "5601:5601"
-        # Publish container port 9002 as a random host port
         - "9200:9200"
-        # Publish container port 9003 as a free host port in range 8000-8100
-        # (the host port will be selected by the Docker daemon)
         - "5044:5044"
