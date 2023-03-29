@@ -142,3 +142,31 @@
         folder: General
         dashboard_id: 15489
         #path: https://grafana.com/api/dashboards/15489/revisions/2/download
+- name: install ElasticSearch
+  hosts: elastic-hosts
+  become: true
+  tasks:
+    - name: ElasticSearch Run the equivalent of "apt-get update" as a separate step
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: ElasticSearch Install a list of packages
+      ansible.builtin.apt:
+        pkg:
+        - docker
+    - name: Restart a container
+      community.docker.docker_container:
+        # docker sebp/elk
+        name: elastic
+        image: sebp/elk
+        state: started
+        restart: true
+        #devices:
+        #- "/dev/sda:/dev/xvda:rwm"
+        ports:
+        # Publish container port 9000 as host port 8080
+        - "5601:5601"
+        # Publish container port 9002 as a random host port
+        - "9200:9200"
+        # Publish container port 9003 as a free host port in range 8000-8100
+        # (the host port will be selected by the Docker daemon)
+        - "5044:5044"

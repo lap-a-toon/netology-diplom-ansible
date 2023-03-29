@@ -17,3 +17,6 @@ prometheus
 
 [grafana-hosts]
 grafana
+
+[elastic-hosts]
+elastic
