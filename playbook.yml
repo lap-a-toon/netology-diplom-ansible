@@ -41,8 +41,8 @@
         dest: /etc/filebeat/filebeat.yml
     - name: Edit service filebeat/nginx
       template:
-        src: etc/filebeat/modules/nginx.yml.j2
-        dest: /etc/filebeat/modules/nginx.yml
+        src: etc/filebeat/modules.d/nginx.yml.j2
+        dest: /etc/filebeat/modules.d/nginx.yml
     - name: Start service filebeat
       ansible.builtin.service:
         name: filebeat.service
