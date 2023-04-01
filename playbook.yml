@@ -33,7 +33,8 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
-    - name: filebeat tune
+  roles:
+    - role: filebeat
       filebeat_output_elasticsearch_enabled: true
       filebeat_output_elasticsearch_hosts:
         - "elastic:9200"
