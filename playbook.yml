@@ -1,6 +1,6 @@
 ---
-- name: Update web servers
-  hosts: web
+- name: ALL SERVERS - apt-get update
+  hosts: all
   become: true
   tasks:
     - name: test
@@ -9,6 +9,10 @@
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
+- name: Update web servers
+  hosts: web
+  become: true
+  tasks:
     - name: Install a list of packages
       ansible.builtin.apt:
         pkg:
@@ -92,9 +96,6 @@
   hosts: grafana-hosts
   become: true
   tasks:
-    - name: Grafana Run the equivalent of "apt-get update" as a separate step
-      ansible.builtin.apt:
-        update_cache: yes
     - name: Grafana Install a list of packages
       ansible.builtin.apt:
         pkg:
@@ -146,9 +147,6 @@
   hosts: elastic-hosts
   become: true
   tasks:
-    - name: ElasticSearch Run the equivalent of "apt-get update" as a separate step
-      ansible.builtin.apt:
-        update_cache: yes
     - name: ElasticSearch Install a list of packages
       ansible.builtin.apt:
         pkg:
