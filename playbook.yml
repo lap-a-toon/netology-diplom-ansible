@@ -1,6 +1,6 @@
 ---
 - name: ALL SERVERS - apt-get update
-  hosts: all
+  hosts: all,!web
   become: true
   tasks:
     - name: test
@@ -9,10 +9,17 @@
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
-- name: Update web servers
+- name: WEB prepare servers
   hosts: web
   become: true
   tasks:
+    - name: Add source repository into sources list
+      ansible.builtin.apt_repository:
+        repo: "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main"
+        state: present
+    - name: Run the equivalent of "apt-get update" as a separate step
+      ansible.builtin.apt:
+        update_cache: yes
     - name: Install a list of packages
       ansible.builtin.apt:
         pkg:
