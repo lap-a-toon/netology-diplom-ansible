@@ -37,7 +37,7 @@
       filebeat_output_elasticsearch_enabled: true
       filebeat_output_elasticsearch_hosts:
         - "elastic:9200"
-      filebeat_enable_logging: false
+      filebeat_enable_logging: true
       filebeat_log_level: warning
       filebeat_log_dir: /var/log/filebeat
       filebeat_log_filename: filebeat.log
