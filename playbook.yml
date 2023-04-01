@@ -33,6 +33,8 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
+    - name: cmd for activate filebeat-nginx
+      command: filebeat modules enable system nginx
     - name: Edit service filebeat
       template:
         src: etc/filebeat/filebeat.yml.j2
