@@ -33,6 +33,15 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
+    - name: Edit service filebeat
+      template:
+        src: etc/filebeat/filebeat.yml.j2
+        dest: /etc/filebeat/filebeat.yml
+    - name: Start service filebeat
+      ansible.builtin.service:
+        name: filebeat.service
+        state: restarted
+
 - name: WEB install Nginx Log Exporter
   hosts: web
   become: true
