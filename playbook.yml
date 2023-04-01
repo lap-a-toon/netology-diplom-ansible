@@ -1,6 +1,6 @@
 ---
 - name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR repository
-  hosts: web,elastic-hosts
+  hosts: web,elastic-hosts,kibana-hosts
   become: true
   tasks:
     - name: Add source repository into sources list
@@ -37,6 +37,10 @@
       template:
         src: etc/filebeat/filebeat.yml.j2
         dest: /etc/filebeat/filebeat.yml
+    - name: Edit service filebeat/nginx
+      template:
+        src: etc/filebeat/modules/filebeat.yml.j2
+        dest: /etc/filebeat/modules/filebeat.yml
     - name: Start service filebeat
       ansible.builtin.service:
         name: filebeat.service

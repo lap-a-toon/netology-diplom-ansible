@@ -20,3 +20,6 @@ grafana
 
 [elastic-hosts]
 elastic
+
+[kibana-hosts]
+kibana
