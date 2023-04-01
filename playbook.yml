@@ -33,15 +33,6 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
-  roles:
-    - role: filebeat
-      filebeat_output_elasticsearch_enabled: true
-      filebeat_output_elasticsearch_hosts:
-        - "elastic:9200"
-      filebeat_enable_logging: true
-      filebeat_log_level: warning
-      filebeat_log_dir: /var/log/filebeat
-      filebeat_log_filename: filebeat.log
 - name: WEB install Nginx Log Exporter
   hosts: web
   become: true
