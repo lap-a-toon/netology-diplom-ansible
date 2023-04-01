@@ -1,6 +1,6 @@
 ---
 - name: ALL SERVERS - apt-get update
-  hosts: all,!web
+  hosts: all,!web,!elastic-hosts
   become: true
   tasks:
     - name: test
@@ -9,8 +9,8 @@
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
-- name: WEB prepare servers
-  hosts: web
+- name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR
+  hosts: web,elastic-hosts
   become: true
   tasks:
     - name: Add source repository into sources list
@@ -20,6 +20,10 @@
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
+- name: WEB prepare servers
+  hosts: web
+  become: true
+  tasks:
     - name: Install a list of packages
       ansible.builtin.apt:
         pkg:
