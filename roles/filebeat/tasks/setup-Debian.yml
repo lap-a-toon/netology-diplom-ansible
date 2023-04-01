@@ -8,6 +8,6 @@
 
 - name: Add Filebeat repository.
   apt_repository:
-    repo: 'deb https://artifacts.elastic.co/packages/deb [trusted=yes] https://mirror.yandex.ru/mirrors/elastic/{{ filebeat_version }}/ stable main'
+    repo: 'deb [trusted=yes] https://mirror.yandex.ru/mirrors/elastic/{{ filebeat_version }}/ stable main'
     state: present
     update_cache: true
