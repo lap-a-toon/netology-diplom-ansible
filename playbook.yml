@@ -18,6 +18,7 @@
         pkg:
         - nginx
         - git
+        - filebeat
     - name: clear native nginx html_orig
       command: rm -rf /var/www/html_orig
     - name: clear native nginx www folder
