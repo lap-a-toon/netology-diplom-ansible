@@ -27,48 +27,7 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
-- name: Installing Prometheus
-  hosts: prometheus
-  become: true
-  tasks:
-    - name: copy install script prometheus
-      template:
-        src: install_prometheus.sh.j2
-        dest: install_prometheus.sh
-    - name: run install script prometheus
-      command: bash ./install_prometheus.sh
-    - name: config prometheus
-      template:
-        src: etc/prometheus/prometheus.j2
-        dest: /etc/prometheus/prometheus.yml
-    - name: create service prometheus
-      template:
-        src: etc/systemd/system/prometheus.service.j2
-        dest: /etc/systemd/system/prometheus.service
-    - name: Start service prometheus, in all cases
-      ansible.builtin.service:
-        name: prometheus.service
-        state: restarted
-- name: install node-exporter
-  hosts: node-exporter
-  become: true
-  tasks:
-    - name: copy install script node-exporter
-      template:
-        src: install_node-exporter.sh.j2
-        dest: install_node-exporter.sh
-    - name: run install script node-exporter
-      command: bash ./install_node-exporter.sh
-    - name: create service node-exporter
-      template:
-        src: etc/systemd/system/node-exporter.service.j2
-        dest: /etc/systemd/system/node-exporter.service
-    - name: Enable service node-exporter, in all cases
-      ansible.builtin.service:
-        name: node-exporter.service
-        enabled: true
-        state: restarted
-- name: install Nginx Log Exporter
+- name: WEB install Nginx Log Exporter
   hosts: web
   become: true
   tasks:
@@ -92,14 +51,51 @@
       ansible.builtin.service:
         name: prometheus-nginxlog-exporter.service
         state: restarted
-- name: install Grafana
+- name: Prometheus Installing
+  hosts: prometheus
+  become: true
+  tasks:
+    - name: copy install script prometheus
+      template:
+        src: install_prometheus.sh.j2
+        dest: install_prometheus.sh
+    - name: run install script prometheus
+      command: bash ./install_prometheus.sh
+    - name: config prometheus
+      template:
+        src: etc/prometheus/prometheus.j2
+        dest: /etc/prometheus/prometheus.yml
+    - name: create service prometheus
+      template:
+        src: etc/systemd/system/prometheus.service.j2
+        dest: /etc/systemd/system/prometheus.service
+    - name: Start service prometheus, in all cases
+      ansible.builtin.service:
+        name: prometheus.service
+        state: restarted
+- name: node-exporter install
+  hosts: node-exporter
+  become: true
+  tasks:
+    - name: copy install script node-exporter
+      template:
+        src: install_node-exporter.sh.j2
+        dest: install_node-exporter.sh
+    - name: run install script node-exporter
+      command: bash ./install_node-exporter.sh
+    - name: create service node-exporter
+      template:
+        src: etc/systemd/system/node-exporter.service.j2
+        dest: /etc/systemd/system/node-exporter.service
+    - name: Enable service node-exporter, in all cases
+      ansible.builtin.service:
+        name: node-exporter.service
+        enabled: true
+        state: restarted
+- name: Grafana installing
   hosts: grafana-hosts
   become: true
   tasks:
-    - name: Grafana Install a list of packages
-      ansible.builtin.apt:
-        pkg:
-        - git
     - name: Install Grafana
       ansible.builtin.apt:
         deb: https://dl.grafana.com/oss/release/grafana_7.0.3_amd64.deb
@@ -131,10 +127,6 @@
         ds_url: http://prometheus:9090
         access: proxy
         tls_skip_verify: true
-        additional_json_data:
-          httpHeaderName1: "Authorization"
-        additional_secure_json_data:
-          httpHeaderValue1: "Bearer ihavenogroot"
     - name: Import Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
@@ -143,7 +135,7 @@
         folder: General
         dashboard_id: 15489
         #path: https://grafana.com/api/dashboards/15489/revisions/2/download
-- name: install ElasticSearch
+- name: ElasticSearch installing
   hosts: elastic-hosts
   become: true
   tasks:
@@ -158,7 +150,7 @@
         name: docker
     - name: Обманываем Эластик и "накидываем" оперативки
       command: sysctl -w vm.max_map_count=262144
-    - name: Restart a container
+    - name: Start a container
       community.docker.docker_container:
         # docker sebp/elk
         name: elastic
