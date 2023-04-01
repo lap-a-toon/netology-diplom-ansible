@@ -1,15 +1,5 @@
 ---
-- name: ALL SERVERS - apt-get update
-  hosts: all,!web,!elastic-hosts
-  become: true
-  tasks:
-    - name: test
-      debug:
-        msg: "Ehlo!"
-    - name: Run the equivalent of "apt-get update" as a separate step
-      ansible.builtin.apt:
-        update_cache: yes
-- name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR
+- name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR repository
   hosts: web,elastic-hosts
   become: true
   tasks:
@@ -17,6 +7,10 @@
       ansible.builtin.apt_repository:
         repo: "deb [trusted=yes] https://mirror.yandex.ru/mirrors/elastic/8/ stable main"
         state: present
+- name: ALL SERVERS - apt-get update
+  hosts: all
+  become: true
+  tasks:
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
@@ -39,6 +33,14 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
+    - name: filebeat tune
+      filebeat_output_elasticsearch_enabled: true
+      filebeat_output_elasticsearch_hosts:
+        - "elastic:9200"
+      filebeat_enable_logging: false
+      filebeat_log_level: warning
+      filebeat_log_dir: /var/log/filebeat
+      filebeat_log_filename: filebeat.log
 - name: WEB install Nginx Log Exporter
   hosts: web
   become: true
@@ -151,6 +153,8 @@
   hosts: elastic-hosts
   become: true
   tasks:
+    - name: Обманываем Эластик и "накидываем" оперативки
+      command: sysctl -w vm.max_map_count=262144
     - name: ElasticSearch Install a list of packages
       ansible.builtin.apt:
         pkg:
@@ -158,16 +162,14 @@
         # - docker.io
         # - pip
           - elasticsearch
-    # - name: Install pip docker
-    #   ansible.builtin.pip:
-    #     name: docker
-    - name: Обманываем Эластик и "накидываем" оперативки
-      command: sysctl -w vm.max_map_count=262144
     - name: Enable and Start ElasticSearch
       ansible.builtin.service:
         name: elasticsearch
         enabled: true
         state: started
+    # - name: Install pip docker
+    #   ansible.builtin.pip:
+    #     name: docker
     # - name: Start a container
     #   community.docker.docker_container:
     #     # docker sebp/elk
