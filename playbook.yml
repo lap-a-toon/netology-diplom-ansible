@@ -160,16 +160,16 @@
         folder: General
         dashboard_id: 15489
         #path: https://grafana.com/api/dashboards/15489/revisions/2/download
-# - name: ElasticSearch installing
-#   hosts: elastic-hosts
-#   become: true
-#   tasks:
-#     - name: Обманываем Эластик и "накидываем" оперативки
-#       command: sysctl -w vm.max_map_count=262144
-#     - name: ElasticSearch Install a list of packages
-#       ansible.builtin.apt:
-#         pkg:
-#         - elasticsearch
+- name: ElasticSearch installing
+  hosts: elastic-hosts
+  become: true
+  tasks:
+    - name: Обманываем Эластик и "накидываем" оперативки
+      command: sysctl -w vm.max_map_count=262144
+    - name: ElasticSearch Install a list of packages
+      ansible.builtin.apt:
+        pkg:
+        - elasticsearch
 #     - name: add user to elasticsearch
 #       ansible.builtin.shell:
 #         cmd: |
@@ -202,7 +202,7 @@
   roles:
     - elastic.elasticsearch
   vars:
-    es_version: 8.2.3
+    es_version: 8.6.2
     es_api_basic_auth_username: elastic
     es_api_basic_auth_password: changeme
     es_enable_http_ssl: true
