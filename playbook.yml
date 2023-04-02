@@ -170,48 +170,33 @@
       ansible.builtin.apt:
         pkg:
         - elasticsearch
-#     - name: add user to elasticsearch
-#       ansible.builtin.shell:
-#         cmd: |
-#           if [ $(/usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx) -eq 0 ]; then 
-#             /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser
-#           else
-#             /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop
-#           fi
-#       ignore_errors: false
-#       register: app_process_check
-#     - debug:
-#         var: app_process_check.stdout
-#     - name: create service elasticsearch
-#       template:
-#         src: etc/elasticsearch/elasticsearch.yml.j2
-#         dest: /etc/elasticsearch/elasticsearch.yml
-#         owner: elasticsearch
-#     - name: Enable and Start ElasticSearch
-#       ansible.builtin.service:
-#         name: elasticsearch
-#         enabled: true
-#         state: started
-#       register: result
-#       ignore_errors: true
-#     - name: Show result of task
-#       debug:
-#         var: result
-- name: ElasticSearch TRY
-  hosts: elastic-hosts
-  roles:
-    - elastic.elasticsearch
-  vars:
-    es_version: 8.6.2
-    es_api_basic_auth_username: elastic
-    es_api_basic_auth_password: changeme
-    es_enable_http_ssl: false
-    es_enable_transport_ssl: false
-    #es_ssl_keystore: "certs/keystore-password.p12"
-    #es_ssl_truststore: "certs/truststore-password.p12"
-    #es_ssl_keystore_password: password1
-    #es_ssl_truststore_password: password2
-    es_validate_certs: no
+    - name: add user to elasticsearch
+      ansible.builtin.shell:
+        cmd: |
+          if [ $(/usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx) -eq 0 ]; then 
+            /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser
+          else
+            /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop
+          fi
+      ignore_errors: false
+      register: app_process_check
+    - debug:
+        var: app_process_check.stdout
+    - name: create service elasticsearch
+      template:
+        src: etc/elasticsearch/elasticsearch.yml.j2
+        dest: /etc/elasticsearch/elasticsearch.yml
+        owner: elasticsearch
+    - name: Enable and Start ElasticSearch
+      ansible.builtin.service:
+        name: elasticsearch
+        enabled: true
+        state: started
+      register: result
+      ignore_errors: true
+    - name: Show result of task
+      debug:
+        var: result
 - name: KIBANA
   hosts: kibana-hosts
   become: true
