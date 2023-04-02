@@ -173,8 +173,8 @@
         name: elasticsearch
         enabled: true
         state: restarted
-        register: result
-        ignore_errors: yes
+      register: result
+      ignore_errors: yes
     - name: Show result of task
       debug:
         var: result
