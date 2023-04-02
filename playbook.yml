@@ -126,14 +126,25 @@
     - name: create prometheus datasource
       community.grafana.grafana_datasource:
         name: prometheus
-        state: present
+        state: absent
+        overwrite: yes
         url: http://localhost:3000
         url_username: "admin"
         url_password: "admin"
         ds_type: prometheus
         ds_url: http://prometheus:9090
         access: proxy
-        tls_skip_verify: true
+    - name: create prometheus datasource
+      community.grafana.grafana_datasource:
+        name: prometheus
+        state: present
+        overwrite: yes
+        url: http://localhost:3000
+        url_username: "admin"
+        url_password: "admin"
+        ds_type: prometheus
+        ds_url: http://prometheus:9090
+        access: proxy
     - name: Import Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
@@ -160,6 +171,11 @@
         name: elasticsearch
         enabled: true
         state: started
+        register: result
+        ignore_errors: yes
+    - name: Show result of task
+      debug:
+        var: result
     # - name: Install pip docker
     #   ansible.builtin.pip:
     #     name: docker
