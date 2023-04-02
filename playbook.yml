@@ -33,20 +33,6 @@
         repo: https://github.com/lap-a-toon/Rasschet-kartochek-dlya-tuniketa-SATURN-TEC.git
         dest: /var/www/html
         update: yes
-    - name: cmd for activate filebeat-nginx
-      command: filebeat modules enable system nginx
-    - name: Edit service filebeat
-      template:
-        src: etc/filebeat/filebeat.yml.j2
-        dest: /etc/filebeat/filebeat.yml
-    - name: Edit service filebeat/nginx
-      template:
-        src: etc/filebeat/modules.d/nginx.yml.j2
-        dest: /etc/filebeat/modules.d/nginx.yml
-    - name: Start service filebeat
-      ansible.builtin.service:
-        name: filebeat.service
-        state: restarted
 
 - name: WEB install Nginx Log Exporter
   hosts: web
@@ -180,7 +166,7 @@
     - name: Start a container
       community.docker.docker_container:
         # docker sebp/elk
-        name: elastic
+        name: elastic-container
         image: sebp/elk
         state: started
         restart: true
@@ -199,3 +185,21 @@
 #       ansible.builtin.apt:
 #         pkg:
 #         - kibana
+- name: WEB run filebeat
+  hosts: web
+  become: true
+  tasks:
+    - name: cmd for activate filebeat-nginx
+      command: filebeat modules enable system nginx
+    - name: Edit service filebeat
+      template:
+        src: etc/filebeat/filebeat.yml.j2
+        dest: /etc/filebeat/filebeat.yml
+    - name: Edit service filebeat/nginx
+      template:
+        src: etc/filebeat/modules.d/nginx.yml.j2
+        dest: /etc/filebeat/modules.d/nginx.yml
+    - name: Start service filebeat
+      ansible.builtin.service:
+        name: filebeat.service
+        state: restarted
