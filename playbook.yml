@@ -198,7 +198,7 @@
 #       debug:
 #         var: result
 - name: ElasticSearch TRY
-  hosts: localhost
+  hosts: elastic-hosts
   roles:
     - elastic.elasticsearch
   vars:
