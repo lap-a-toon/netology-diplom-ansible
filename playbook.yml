@@ -164,7 +164,7 @@
         # - docker.io
         # - pip
         - elasticsearch
-    - name: create service node-exporter
+    - name: create service elasticsearch
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
         dest: /etc/elasticsearch/elasticsearch.yml
