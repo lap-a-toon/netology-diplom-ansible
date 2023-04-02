@@ -173,11 +173,11 @@
         # - docker.io
         # - pip
         - elasticsearch
-    - name: Stop ElasticSearch
-      ansible.builtin.service:
-        name: elasticsearch
-        enabled: false
-        state: stopped
+    # - name: Stop ElasticSearch
+    #   ansible.builtin.service:
+    #     name: elasticsearch
+    #     enabled: false
+    #     state: stopped
     - name: add user to elasticsearch
       ansible.builtin.shell:
         cmd: |
