@@ -1,6 +1,6 @@
 ---
 - name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR repository
-  hosts: web,elastic-hosts #,kibana-hosts
+  hosts: web,elastic-hosts,kibana-hosts
   become: true
   tasks:
     - name: Add source repository into sources list
