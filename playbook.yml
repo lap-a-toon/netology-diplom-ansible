@@ -203,6 +203,11 @@
       ansible.builtin.apt:
         pkg:
         - kibana
+    - name: Enable and Start Kibana
+      ansible.builtin.service:
+        name: kibana
+        enabled: true
+        state: started
 - name: WEB run filebeat
   hosts: web
   become: true
