@@ -127,7 +127,6 @@
       community.grafana.grafana_datasource:
         name: prometheus
         state: absent
-        overwrite: yes
         url: http://localhost:3000
         url_username: "admin"
         url_password: "admin"
