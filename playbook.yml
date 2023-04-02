@@ -165,11 +165,15 @@
         # - docker.io
         # - pip
         - elasticsearch
+    - name: create service node-exporter
+      template:
+        src: etc/elasticsearch/elasticsearch.yml.j2
+        dest: /etc/elasticsearch/elasticsearch.yml
     - name: Enable and Start ElasticSearch
       ansible.builtin.service:
         name: elasticsearch
         enabled: true
-        state: started
+        state: restarted
         register: result
         ignore_errors: yes
     - name: Show result of task
