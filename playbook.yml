@@ -179,7 +179,8 @@
         enabled: false
         state: stopped
     - name: add user to elasticsearch
-      ansible.builtin.shell: if [[ $(/usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx) -eq 0 ]]; then /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser; else /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop; fi
+      ansible.builtin.shell:
+        cmd: if [[ $(/usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx) -eq 0 ]]; then /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser; else /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop; fi
     - name: create service elasticsearch
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
