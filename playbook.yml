@@ -151,40 +151,40 @@
     - name: ElasticSearch Install a list of packages
       ansible.builtin.apt:
         pkg:
-        - docker
-        - docker.io
-        - pip
-    #       - elasticsearch
-    # - name: Enable and Start ElasticSearch
-    #   ansible.builtin.service:
-    #     name: elasticsearch
-    #     enabled: true
-    #     state: started
-    - name: Install pip docker
-      ansible.builtin.pip:
-        name: docker
-    - name: Start a container
-      community.docker.docker_container:
-        # docker sebp/elk
-        name: elastic-container
-        image: sebp/elk
+        # - docker
+        # - docker.io
+        # - pip
+        - elasticsearch
+    - name: Enable and Start ElasticSearch
+      ansible.builtin.service:
+        name: elasticsearch
+        enabled: true
         state: started
-        restart: true
-        #devices:
-        #- "/dev/sda:/dev/xvda:rwm"
-        ports:
-        - "5601:5601"
-        - "9200:9200"
-        - "9300:9300"
-        - "5044:5044"
-# - name: KIBANA
-#   hosts: kibana-hosts
-#   become: true
-#   tasks:
-#     - name: KIBANA install
-#       ansible.builtin.apt:
-#         pkg:
-#         - kibana
+    # - name: Install pip docker
+    #   ansible.builtin.pip:
+    #     name: docker
+    # - name: Start a container
+    #   community.docker.docker_container:
+    #     # docker sebp/elk
+    #     name: elastic-container
+    #     image: sebp/elk
+    #     state: started
+    #     restart: true
+    #     #devices:
+    #     #- "/dev/sda:/dev/xvda:rwm"
+    #     ports:
+    #     - "5601:5601"
+    #     - "9200:9200"
+    #     - "9300:9300"
+    #     - "5044:5044"
+- name: KIBANA
+  hosts: kibana-hosts
+  become: true
+  tasks:
+    - name: KIBANA install
+      ansible.builtin.apt:
+        pkg:
+        - kibana
 - name: WEB run filebeat
   hosts: web
   become: true
