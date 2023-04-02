@@ -170,18 +170,16 @@
       ansible.builtin.apt:
         pkg:
         - elasticsearch
-    - name: add user to elasticsearch
-      ansible.builtin.shell:
-        cmd: |
-          if [ $(/usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx) -eq 0 ]; then 
-            /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser
-          else
-            /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop
-          fi
-      ignore_errors: false
-      register: app_process_check
-    - debug:
-        var: app_process_check.stdout
+    - name: check if my user exists
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx
+      register: has_user
+      failed_when: has_user.rc not in [ 0, 1, 2, 3 ]
+    - name: create user
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser
+      when: has_user.stdout == "0"
+    - name: just change password
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop
+      when: has_user.stdout != "0"
     - name: create service elasticsearch
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
