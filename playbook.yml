@@ -169,15 +169,7 @@
     - name: ElasticSearch Install a list of packages
       ansible.builtin.apt:
         pkg:
-        # - docker
-        # - docker.io
-        # - pip
         - elasticsearch
-    # - name: Stop ElasticSearch
-    #   ansible.builtin.service:
-    #     name: elasticsearch
-    #     enabled: false
-    #     state: stopped
     - name: add user to elasticsearch
       ansible.builtin.shell:
         cmd: |
@@ -194,6 +186,7 @@
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
         dest: /etc/elasticsearch/elasticsearch.yml
+        owner: elasticsearch
     - name: Enable and Start ElasticSearch
       ansible.builtin.service:
         name: elasticsearch
@@ -204,23 +197,6 @@
     - name: Show result of task
       debug:
         var: result
-    # - name: Install pip docker
-    #   ansible.builtin.pip:
-    #     name: docker
-    # - name: Start a container
-    #   community.docker.docker_container:
-    #     # docker sebp/elk
-    #     name: elastic-container
-    #     image: sebp/elk
-    #     state: started
-    #     restart: true
-    #     #devices:
-    #     #- "/dev/sda:/dev/xvda:rwm"
-    #     ports:
-    #     - "5601:5601"
-    #     - "9200:9200"
-    #     - "9300:9300"
-    #     - "5044:5044"
 - name: KIBANA
   hosts: kibana-hosts
   become: true
