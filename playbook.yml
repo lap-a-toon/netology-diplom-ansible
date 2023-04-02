@@ -1,6 +1,6 @@
 ---
 - name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR repository
-  hosts: web,elastic-hosts,kibana-hosts
+  hosts: web,elastic-hosts #,kibana-hosts
   become: true
   tasks:
     - name: Add source repository into sources list
@@ -165,29 +165,37 @@
     - name: ElasticSearch Install a list of packages
       ansible.builtin.apt:
         pkg:
-        # - docker
-        # - docker.io
-        # - pip
-          - elasticsearch
-    - name: Enable and Start ElasticSearch
-      ansible.builtin.service:
-        name: elasticsearch
-        enabled: true
-        state: started
-    # - name: Install pip docker
-    #   ansible.builtin.pip:
-    #     name: docker
-    # - name: Start a container
-    #   community.docker.docker_container:
-    #     # docker sebp/elk
-    #     name: elastic
-    #     image: sebp/elk
+        - docker
+        - docker.io
+        - pip
+    #       - elasticsearch
+    # - name: Enable and Start ElasticSearch
+    #   ansible.builtin.service:
+    #     name: elasticsearch
+    #     enabled: true
     #     state: started
-    #     restart: true
-    #     #devices:
-    #     #- "/dev/sda:/dev/xvda:rwm"
-    #     ports:
-    #     - "5601:5601"
-    #     - "9200:9200"
-    #     - "9300:9300"
-    #     - "5044:5044"
+    - name: Install pip docker
+      ansible.builtin.pip:
+        name: docker
+    - name: Start a container
+      community.docker.docker_container:
+        # docker sebp/elk
+        name: elastic
+        image: sebp/elk
+        state: started
+        restart: true
+        #devices:
+        #- "/dev/sda:/dev/xvda:rwm"
+        ports:
+        - "5601:5601"
+        - "9200:9200"
+        - "9300:9300"
+        - "5044:5044"
+# - name: KIBANA
+#   hosts: kibana-hosts
+#   become: true
+#   tasks:
+#     - name: KIBANA install
+#       ansible.builtin.apt:
+#         pkg:
+#         - kibana
