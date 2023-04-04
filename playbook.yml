@@ -208,6 +208,7 @@
         name: kibana
         enabled: true
         state: started
+# Здесь надо перехватить шестизначный код ручной верификации (он выводится в лог или по команде)
 - name: WEB run filebeat
   hosts: web
   become: true
@@ -222,6 +223,10 @@
       template:
         src: etc/filebeat/modules.d/nginx.yml.j2
         dest: /etc/filebeat/modules.d/nginx.yml
+    - name: Edit service filebeat/nginx
+      template:
+        src: etc/filebeat/modules.d/system.yml.j2
+        dest: /etc/filebeat/modules.d/system.yml
     - name: Start service filebeat
       ansible.builtin.service:
         name: filebeat.service
