@@ -1,12 +1,12 @@
 ---
 - hosts: all
   gather_facts: false
+  serial: 10
   tasks:
   - name: Wait 300 seconds, but only start checking after 60 seconds
     ansible.builtin.wait_for_connection:
       delay: 60
       timeout: 300
-    serial: 10
 # - name: WAIT UNTIL ALL SERVERS ARE update
 #   hosts: all
 #   tasks:
