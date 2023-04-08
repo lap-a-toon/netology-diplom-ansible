@@ -190,6 +190,9 @@
     - name: just change password
       shell: /usr/share/elasticsearch/bin/elasticsearch-users passwd {{elastic_user}} -p {{elastic_password}}
       when: has_user.stdout != "0"
+    - name: add kibana_system role to user
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users roles {{elastic_user}} -a kibana_system
+      when: has_user.stdout != "0"
     - name: config service elasticsearch
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
