@@ -181,16 +181,16 @@
         pkg:
         - elasticsearch
     - name: check if my user exists
-      shell: /usr/share/elasticsearch/bin/elasticsearch-users list | grep -c lexx
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users list | grep -c {{elastic_user}}
       register: has_user
       failed_when: has_user.rc not in [ 0, 1, 2, 3 ]
     - name: create user
-      shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd lexx -p qwertyuiop -r superuser
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users useradd {{elastic_user}} -p {{elastic_password}} -r superuser
       when: has_user.stdout == "0"
     - name: just change password
-      shell: /usr/share/elasticsearch/bin/elasticsearch-users passwd lexx -p qwertyuiop
+      shell: /usr/share/elasticsearch/bin/elasticsearch-users passwd {{elastic_user}} -p {{elastic_password}}
       when: has_user.stdout != "0"
-    - name: create service elasticsearch
+    - name: config service elasticsearch
       template:
         src: etc/elasticsearch/elasticsearch.yml.j2
         dest: /etc/elasticsearch/elasticsearch.yml
@@ -213,6 +213,11 @@
       ansible.builtin.apt:
         pkg:
         - kibana
+    - name: config service elasticsearch
+      template:
+        src: etc/kibana/kibana.yml.j2
+        dest: /etc/kibana/kibana.yml
+        owner: kibana
     - name: Enable and Start Kibana
       ansible.builtin.service:
         name: kibana

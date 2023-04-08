@@ -3,6 +3,9 @@ ansible_connection=ssh
 ansible_user=tester
 ansible_ssh_pass=1234567890
 
+elastic_user=lexx
+elastic_password=qwertyuiop
+
 [web]
 web-1
 web-2
