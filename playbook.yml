@@ -246,3 +246,6 @@
       ansible.builtin.service:
         name: filebeat.service
         state: restarted
+    - name: Enabling filebeat for kibana (with ignore_errors, it's too long process)
+      command: filebeat setup
+      ignore_errors: true
