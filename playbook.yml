@@ -186,8 +186,17 @@
         src: etc/elasticsearch/elasticsearch.yml.j2
         dest: /etc/elasticsearch/elasticsearch.yml
         owner: elasticsearch
+    - name: Customising Elascticsearch Startup time from 75 to 210 sec - create directory form CustomConf
+      file:
+        path: /usr/lib/systemd/system/elasticsearch.service.d
+        state: directory
+    - name: Customising Elascticsearch Startup time from 75 to 210 sec - creating file
+      template:
+        src: usr/lib/systemd/system/elasticsearch.service.d/startup-timeout.conf.j2
+        dest: /usr/lib/systemd/system/elasticsearch.service.d/startup-timeout.conf
     - name: Enable and Start ElasticSearch
-      ansible.builtin.service:
+      ansible.builtin.systemd:
+        daemon_reload: true
         name: elasticsearch
         enabled: true
         state: started
