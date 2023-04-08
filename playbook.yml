@@ -1,16 +1,12 @@
 ---
-- hosts: all
-  gather_facts: false
-  serial: 10
-  tasks:
-  - name: Wait 300 seconds, but only start checking after 60 seconds
-    ansible.builtin.wait_for_connection:
-      delay: 60
-      timeout: 300
 - name: WEB and ELASTIC (...and KIBANA) add YANDEX MIRROR repository
   hosts: web,elastic-hosts,kibana-hosts
   become: true
   tasks:
+    - name: Wait 120 seconds, but only start checking after 5 seconds
+      ansible.builtin.wait_for_connection:
+        delay: 1
+        timeout: 120
     - name: Add source repository into sources list
       ansible.builtin.apt_repository:
         repo: "deb [trusted=yes] https://mirror.yandex.ru/mirrors/elastic/8/ stable main"
@@ -19,6 +15,10 @@
   hosts: all
   become: true
   tasks:
+    - name: Wait 120 seconds, but only start checking after 5 seconds
+      ansible.builtin.wait_for_connection:
+        delay: 1
+        timeout: 120
     - name: Run the equivalent of "apt-get update" as a separate step
       ansible.builtin.apt:
         update_cache: yes
