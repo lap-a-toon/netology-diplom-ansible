@@ -252,7 +252,7 @@
         state: restarted
     - name: Check if Kibana is accessible
       uri:
-        url: 'http://{{ elastic_user }}:{{ elastic_password }}@kibana:5601/api/status'
+        url: 'http://kibana:5601/api/status'
         return_content: no
         validate_certs: no
         user: "{{ elastic_user }}"
