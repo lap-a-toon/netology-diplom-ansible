@@ -255,6 +255,10 @@
         url: 'http://{{ elastic_user }}:{{ elastic_password }}@kibana:5601/api/status'
         return_content: no
         validate_certs: no
+        user: "{{ elastic_user }}"
+        password: "{{ elastic_password }}"
+        method: GET
+        force_basic_auth: true
         status_code:
           - 200
       until: uri_kibana_output.status == 200
