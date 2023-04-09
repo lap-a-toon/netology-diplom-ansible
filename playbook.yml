@@ -250,6 +250,17 @@
       ansible.builtin.service:
         name: filebeat.service
         state: restarted
+    - name: Check if Kibana is accessible
+      uri:
+        url: 'http://{{ elastic_user }}:{{ elastic_password }}@kibana:5601/api/status'
+        return_content: yes
+        validate_certs: no
+        status_code:
+          - 200
+      until: uri_kibana_output.status == 200
+      retries: 48 # Retries for 24 * 5 seconds = 240 seconds = 4 minutes
+      delay: 5 # Every 5 seconds
+      register: uri_kibana_output
     - name: Enabling filebeat for kibana (with ignore_errors, it's too long process)
       command: filebeat setup
       ignore_errors: true
