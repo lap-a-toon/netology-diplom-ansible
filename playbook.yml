@@ -253,7 +253,7 @@
     - name: Check if Kibana is accessible
       uri:
         url: 'http://{{ elastic_user }}:{{ elastic_password }}@kibana:5601/api/status'
-        return_content: yes
+        return_content: no
         validate_certs: no
         status_code:
           - 200
