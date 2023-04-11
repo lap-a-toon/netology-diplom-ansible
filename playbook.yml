@@ -155,7 +155,14 @@
         ds_type: prometheus
         ds_url: http://prometheus:9090
         access: proxy
-    - name: Import Grafana dashboard
+    - name: Import Grafana dashboard "1 Node Exporter for Prometheus Dashboard EN 20201010"
+      community.grafana.grafana_dashboard:
+        url: http://localhost:3000
+        url_username: "admin"
+        url_password: "admin"
+        folder: General
+        dashboard_id: 11074
+    - name: Import one more Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
         url_username: "admin"
