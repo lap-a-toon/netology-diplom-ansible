@@ -104,9 +104,11 @@
         remote_src: true
         dest: /tmp
     - name: Move needed files to "/etc/prometheus/node-exporter"
-      ansible.builtin.copy:
-        src: "/tmp/node_exporter-1.0.0.linux-amd64/*"
-        dest: "/etc/prometheus/node-exporter/"
+      ansible.builtin.file:
+        src: "/tmp/node_exporter-1.0.0.linux-amd64"
+        dest: "/etc/prometheus/node-exporter"
+        state: directory
+        recurse: true
         owner: prometheus
         group: prometheus
         mode: u=rwx,g=rx,o=rx
