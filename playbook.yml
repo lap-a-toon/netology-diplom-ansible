@@ -95,9 +95,9 @@
         state: directory
         owner: prometheus
         group: prometheus
-        loop:
-          - "/etc/prometheus/"
-          - "/etc/prometheus/node-exporter"
+      loop:
+        - "/etc/prometheus/"
+        - "/etc/prometheus/node-exporter"
     - name: Download & Extract node-exporter
       ansible.builtin.unarchive:
         src: https://github.com/prometheus/node_exporter/releases/download/v1.0.0/node_exporter-1.0.0.linux-amd64.tar.gz
@@ -131,9 +131,9 @@
       ansible.builtin.file:
         path: "{{item}}"
         state: directory
-        loop:
-          - "{{prometheus_tmp_dir}}"
-          - "/var/lib/prometheus"
+      loop:
+        - "{{prometheus_tmp_dir}}"
+        - "/var/lib/prometheus"
     - name: Download & Extract prometheus to Temporary directory
       ansible.builtin.unarchive:
         src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
@@ -148,9 +148,9 @@
         state: file
         owner: prometheus
         group: prometheus
-        loop:
-          - { src: prometheus, dest: "/usr/local/bin/prometheus" }
-          - { src: promtool, dest: "/usr/local/bin/promtool" }
+      loop:
+        - { src: prometheus, dest: "/usr/local/bin/prometheus" }
+        - { src: promtool, dest: "/usr/local/bin/promtool" }
     - name: Copying all needed directories for Prometheus
       ansible.builtin.file:
         src: '{{prometheus_tmp_dir}}/{{item.src}}'
@@ -159,9 +159,9 @@
         recurse: true
         owner: prometheus
         group: prometheus
-        loop:
-          - { src: console_libraries, dest: /etc/prometheus/console_libraries }
-          - { src: consoles, dest: /etc/prometheus/consoles }
+      loop:
+        - { src: console_libraries, dest: /etc/prometheus/console_libraries }
+        - { src: consoles, dest: /etc/prometheus/consoles }
     # 
     - name: config prometheus
       template:
