@@ -105,13 +105,17 @@
         dest: /tmp
     - name: Move needed files to "/etc/prometheus/node-exporter"
       ansible.builtin.file:
-        src: "/tmp/node_exporter-1.0.0.linux-amd64"
-        dest: "/etc/prometheus/node-exporter"
-        state: directory
+        src: "/tmp/node_exporter-1.0.0.linux-amd64/{{item}}"
+        dest: "/etc/prometheus/node-exporter/"
+        state: file
         recurse: true
         owner: prometheus
         group: prometheus
         mode: u=rwx,g=rx,o=rx
+        loop:
+          - 'node_exporter'
+          - 'LICENSE'
+          - 'NOTICE'
     #
     - name: create service node-exporter
       template:
@@ -144,8 +148,8 @@
     - name: Download & Extract prometheus to Temporary directory
       ansible.builtin.unarchive:
         src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
-        remote_src: true
         dest: '{{prometheus_tmp_dir}}'
+        remote_src: true
         owner: prometheus
         group: prometheus
     - name: Copying all needed files for Prometheus
@@ -153,6 +157,7 @@
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
         state: file
+        recurse: true
         owner: prometheus
         group: prometheus
         mode: u=rwx,g=rx,o=rx
