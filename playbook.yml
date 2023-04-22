@@ -104,18 +104,18 @@
         remote_src: true
         dest: /tmp
     - name: Move needed files to "/etc/prometheus/node-exporter"
-      ansible.builtin.file:
+      ansible.builtin.copy:
         src: "/tmp/node_exporter-1.0.0.linux-amd64/{{item}}"
         dest: "/etc/prometheus/node-exporter/"
-        state: file
+        #state: file
         owner: prometheus
         group: prometheus
         remote_src: true
         mode: u=rwx,g=rx,o=rx
       loop:
-        - 'node_exporter'
-        - 'LICENSE'
-        - 'NOTICE'
+        - { src: 'node_exporter'}
+        - { src: 'LICENSE'}
+        - { src: 'NOTICE'}
     #
     - name: create service node-exporter
       template:
@@ -153,11 +153,11 @@
         owner: prometheus
         group: prometheus
     - name: Copying all needed files for Prometheus
-      ansible.builtin.file:
+      ansible.builtin.copy:
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
-        state: file
-        recurse: true
+        #state: file
+        #recurse: true
         owner: prometheus
         group: prometheus
         mode: u=rwx,g=rx,o=rx
@@ -165,10 +165,10 @@
         - { src: 'prometheus', dest: "/usr/local/bin/" }
         - { src: 'promtool', dest: "/usr/local/bin/" }
     - name: Copying all needed directories for Prometheus
-      ansible.builtin.file:
+      ansible.builtin.copy:
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
-        state: directory
+        #state: directory
         recurse: true
         owner: prometheus
         group: prometheus
