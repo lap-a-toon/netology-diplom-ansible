@@ -6,6 +6,8 @@ ansible_ssh_pass=1234567890
 elastic_user=lexx
 elastic_password=qwertyuiop
 
+prometheus_tmp_dir=/tmp/prometheus
+
 [web]
 web-1
 web-2

@@ -70,16 +70,98 @@
       ansible.builtin.service:
         name: prometheus-nginxlog-exporter.service
         state: restarted
-- name: Prometheus Installing
-  hosts: prometheus
+- name: node-exporter install
+  hosts: all
   become: true
   tasks:
-    - name: copy install script prometheus
+    # - name: copy install script node-exporter
+    #   template:
+    #     src: install_node-exporter.sh.j2
+    #     dest: install_node-exporter.sh
+    # - name: run install script node-exporter
+    #   command: bash ./install_node-exporter.sh
+
+    # INSTALLING NODE-EXPORTER
+    - name: Add user prometheus
+      ansible.builtin.user:
+        name: prometheus
+        comment: Need to use node-exporter
+        shell: /bin/false
+        create_home: false
+    - name: Create a directory /etc/prometheus/node-exporter
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: prometheus
+        group: prometheus
+        loop:
+          - /etc/prometheus/
+          - /etc/prometheus/node-exporter
+    - name: Download & Extract node-exporter
+      ansible.builtin.unarchive:
+        src: https://github.com/prometheus/node_exporter/releases/download/v1.0.0/node_exporter-1.0.0.linux-amd64.tar.gz
+        remote_src: true
+        dest: /etc/prometheus/node-exporter
+        owner: prometheus
+        group: prometheus
+    #
+    - name: create service node-exporter
       template:
-        src: install_prometheus.sh.j2
-        dest: install_prometheus.sh
-    - name: run install script prometheus
-      command: bash ./install_prometheus.sh
+        src: etc/systemd/system/node-exporter.service.j2
+        dest: /etc/systemd/system/node-exporter.service
+    - name: Enable service node-exporter, in all cases
+      ansible.builtin.service:
+        name: node-exporter.service
+        enabled: true
+        state: restarted
+- name: Prometheus Installing
+  hosts: prometheus-srv 
+  become: true
+  tasks:
+    # - name: copy install script prometheus
+    #   template:
+    #     src: install_prometheus.sh.j2
+    #     dest: install_prometheus.sh
+    # - name: run install script prometheus
+    #   command: bash ./install_prometheus.sh
+    # 
+    # REMAKING INSTALLATION PROMETHEUS W/O SHELL
+    - name: Create Temporary folder for untar prometheus
+      ansible.builtin.file:
+        path: "{{item}}"
+        state: directory
+        loop:
+          - {{prometheus_tmp_dir}}
+          - /var/lib/prometheus
+    - name: Download & Extract prometheus to Temporary directory
+      ansible.builtin.unarchive:
+        src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
+        remote_src: true
+        dest: {{prometheus_tmp_dir}}
+        owner: prometheus
+        group: prometheus
+    - name: Copying all needed files for Prometheus
+      ansible.builtin.file:
+        src: '{{prometheus_tmp_dir}}/{{item.src}}'
+        dest: '{{item.dest}}'
+        state: file
+        owner: prometheus
+        group: prometheus
+        loop:
+          - { src: prometheus, dest: /usr/local/bin/prometheus }
+          - { src: promtool, dest: /usr/local/bin/promtool }
+    - name: Copying all needed directories for Prometheus
+      ansible.builtin.file:
+        src: '{{prometheus_tmp_dir}}/{{item.src}}'
+        dest: '{{item.dest}}'
+        state: directory
+        recurse: true
+        owner: prometheus
+        group: prometheus
+        loop:
+          - { src: console_libraries, dest: /etc/prometheus/console_libraries }
+          - { src: consoles, dest: /etc/prometheus/consoles }
+    # 
     - name: config prometheus
       template:
         src: etc/prometheus/prometheus.j2
@@ -92,25 +174,7 @@
       ansible.builtin.service:
         name: prometheus.service
         state: restarted
-- name: node-exporter install
-  hosts: node-exporter
-  become: true
-  tasks:
-    - name: copy install script node-exporter
-      template:
-        src: install_node-exporter.sh.j2
-        dest: install_node-exporter.sh
-    - name: run install script node-exporter
-      command: bash ./install_node-exporter.sh
-    - name: create service node-exporter
-      template:
-        src: etc/systemd/system/node-exporter.service.j2
-        dest: /etc/systemd/system/node-exporter.service
-    - name: Enable service node-exporter, in all cases
-      ansible.builtin.service:
-        name: node-exporter.service
-        enabled: true
-        state: restarted
+
 - name: Grafana installing
   hosts: grafana-hosts
   become: true
