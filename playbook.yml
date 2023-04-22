@@ -105,7 +105,7 @@
         dest: /tmp
     - name: Move needed files to "/etc/prometheus/node-exporter"
       ansible.builtin.copy:
-        src: "/tmp/node_exporter-1.0.0.linux-amd64/{{item}}"
+        src: "/tmp/node_exporter-1.0.0.linux-amd64/{{item.src}}"
         dest: "/etc/prometheus/node-exporter/"
         #state: file
         owner: prometheus
