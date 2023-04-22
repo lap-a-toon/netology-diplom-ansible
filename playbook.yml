@@ -113,10 +113,10 @@
         group: prometheus
         remote_src: true
         mode: u=rwx,g=rx,o=rx
-        loop:
-          - 'node_exporter'
-          - 'LICENSE'
-          - 'NOTICE'
+      loop:
+        - 'node_exporter'
+        - 'LICENSE'
+        - 'NOTICE'
     #
     - name: create service node-exporter
       template:
