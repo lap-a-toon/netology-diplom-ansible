@@ -131,13 +131,13 @@
         path: "{{item}}"
         state: directory
         with_items:
-          - {{prometheus_tmp_dir}}
+          - '{{prometheus_tmp_dir}}'
           - /var/lib/prometheus
     - name: Download & Extract prometheus to Temporary directory
       ansible.builtin.unarchive:
         src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
         remote_src: true
-        dest: {{prometheus_tmp_dir}}
+        dest: '{{prometheus_tmp_dir}}'
         owner: prometheus
         group: prometheus
     - name: Copying all needed files for Prometheus
