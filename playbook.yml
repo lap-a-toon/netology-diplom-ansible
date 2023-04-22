@@ -153,6 +153,7 @@
         state: file
         owner: prometheus
         group: prometheus
+        mode: u=rwx,g=rx,o=rx
       loop:
         - { src: 'prometheus', dest: "/usr/local/bin/" }
         - { src: 'promtool', dest: "/usr/local/bin/" }
