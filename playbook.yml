@@ -160,6 +160,7 @@
         #recurse: true
         owner: prometheus
         group: prometheus
+        remote_src: true
         mode: u=rwx,g=rx,o=rx
       loop:
         - { src: 'prometheus', dest: "/usr/local/bin/" }
@@ -171,6 +172,7 @@
         #state: directory
         recurse: true
         owner: prometheus
+        remote_src: true
         group: prometheus
       loop:
         - { src: 'console_libraries', dest: '/etc/prometheus/' }
