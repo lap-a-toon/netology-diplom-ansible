@@ -142,6 +142,8 @@
       ansible.builtin.file:
         path: "{{item}}"
         state: directory
+        owner: prometheus
+        group: prometheus
       loop:
         - "{{prometheus_tmp_dir}}"
         - "/var/lib/prometheus"
@@ -156,8 +158,6 @@
       ansible.builtin.copy:
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
-        #state: file
-        #recurse: true
         owner: prometheus
         group: prometheus
         remote_src: true
@@ -169,10 +169,8 @@
       ansible.builtin.copy:
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
-        #state: directory
-        #recurse: true
-        owner: prometheus
         remote_src: true
+        owner: prometheus
         group: prometheus
       loop:
         - { src: 'console_libraries', dest: '/etc/prometheus/' }
@@ -241,7 +239,8 @@
         url_username: "admin"
         url_password: "admin"
         folder: General
-        dashboard_id: '11074'
+        #dashboard_id: '11074'
+        dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
     - name: Import one more Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
