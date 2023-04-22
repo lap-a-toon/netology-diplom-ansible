@@ -143,25 +143,25 @@
         group: prometheus
     - name: Copying all needed files for Prometheus
       ansible.builtin.file:
-        src: '{{prometheus_tmp_dir}}/{{item.src}}'
+        src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
         state: file
         owner: prometheus
         group: prometheus
       loop:
-        - { src: '{{prometheus_tmp_dir}}/prometheus', dest: "/usr/local/bin/prometheus" }
-        - { src: '{{prometheus_tmp_dir}}/promtool', dest: "/usr/local/bin/promtool" }
+        - { src: 'prometheus', dest: "/usr/local/bin/prometheus" }
+        - { src: 'promtool', dest: "/usr/local/bin/promtool" }
     - name: Copying all needed directories for Prometheus
       ansible.builtin.file:
-        src: '{{item.src}}'
+        src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
         state: directory
         recurse: true
         owner: prometheus
         group: prometheus
       loop:
-        - { src: '{{prometheus_tmp_dir}}/console_libraries', dest: /etc/prometheus/console_libraries }
-        - { src: '{{prometheus_tmp_dir}}/consoles', dest: /etc/prometheus/consoles }
+        - { src: 'console_libraries', dest: /etc/prometheus/console_libraries }
+        - { src: 'consoles', dest: /etc/prometheus/consoles }
     # 
     - name: config prometheus
       template:
