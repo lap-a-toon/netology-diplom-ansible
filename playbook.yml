@@ -111,6 +111,7 @@
         recurse: true
         owner: prometheus
         group: prometheus
+        remote_src: true
         mode: u=rwx,g=rx,o=rx
         loop:
           - 'node_exporter'
