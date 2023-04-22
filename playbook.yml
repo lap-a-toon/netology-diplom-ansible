@@ -226,14 +226,14 @@
         url_username: "admin"
         url_password: "admin"
         folder: General
-        dashboard_id: 11074
+        dashboard_id: '11074'
     - name: Import one more Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
         url_username: "admin"
         url_password: "admin"
         folder: General
-        dashboard_id: 15489
+        dashboard_id: '15489'
         #path: https://grafana.com/api/dashboards/15489/revisions/2/download
 - name: ElasticSearch installing
   hosts: elastic-hosts
