@@ -149,8 +149,8 @@
         owner: prometheus
         group: prometheus
       loop:
-        - { from: 'prometheus', src: "/usr/local/bin/" }
-        - { to: 'promtool', dest: "/usr/local/bin/" }
+        - { src: 'prometheus', dest: "/usr/local/bin/" }
+        - { src: 'promtool', dest: "/usr/local/bin/" }
     - name: Copying all needed directories for Prometheus
       ansible.builtin.file:
         src: '{{prometheus_unpacked}}/{{item.src}}'
