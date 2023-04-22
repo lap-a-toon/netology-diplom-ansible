@@ -90,7 +90,7 @@
         create_home: false
     - name: Create a directory /etc/prometheus/node-exporter
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: "{{item}}"
         state: directory
         owner: prometheus
         group: prometheus
