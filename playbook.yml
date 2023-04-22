@@ -94,7 +94,7 @@
         state: directory
         owner: prometheus
         group: prometheus
-        loop:
+        with_items:
           - /etc/prometheus/
           - /etc/prometheus/node-exporter
     - name: Download & Extract node-exporter
@@ -130,7 +130,7 @@
       ansible.builtin.file:
         path: "{{item}}"
         state: directory
-        loop:
+        with_items:
           - {{prometheus_tmp_dir}}
           - /var/lib/prometheus
     - name: Download & Extract prometheus to Temporary directory
@@ -147,7 +147,7 @@
         state: file
         owner: prometheus
         group: prometheus
-        loop:
+        with_items:
           - { src: prometheus, dest: /usr/local/bin/prometheus }
           - { src: promtool, dest: /usr/local/bin/promtool }
     - name: Copying all needed directories for Prometheus
@@ -158,7 +158,7 @@
         recurse: true
         owner: prometheus
         group: prometheus
-        loop:
+        with_items:
           - { src: console_libraries, dest: /etc/prometheus/console_libraries }
           - { src: consoles, dest: /etc/prometheus/consoles }
     # 
