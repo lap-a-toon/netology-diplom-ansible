@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Just waiting for all servers accessible
+  hosts: all
   gather_facts: false
   serial: 10
   tasks:
