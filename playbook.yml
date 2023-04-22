@@ -170,7 +170,7 @@
         src: '{{prometheus_unpacked}}/{{item.src}}'
         dest: '{{item.dest}}'
         #state: directory
-        recurse: true
+        #recurse: true
         owner: prometheus
         remote_src: true
         group: prometheus
