@@ -61,14 +61,6 @@
   hosts: web
   become: true
   tasks:
-    - name: Install Nginx Log Exporter
-      ansible.builtin.apt:
-        deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.10.0/prometheus-nginxlog-exporter_1.10.0_linux_amd64.deb
-        state: present
-    - name: Edit service prometheus-nginxlog-exporter
-      template:
-        src: etc/prometheus-nginxlog-exporter.hcl.j2
-        dest: /etc/prometheus-nginxlog-exporter.hcl
     - name: chmod nginx access log to 755
       file:
         path: /var/log/nginx/access.log
@@ -77,10 +69,20 @@
       file:
         path: /var/log/nginx/error.log
         mode: 0755
-    - name: Start service Nginx Log Exporter
+    - name: Install Nginx Log Exporter
+      ansible.builtin.apt:
+        deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.10.0/prometheus-nginxlog-exporter_1.10.0_linux_amd64.deb
+        state: present
+    - name: Edit service prometheus-nginxlog-exporter
+      template:
+        src: etc/prometheus-nginxlog-exporter.hcl.j2
+        dest: /etc/prometheus-nginxlog-exporter.hcl
+      register: service_nginxlog_exporter_conf
+    - name: restart nginxlog_exporter after reconfig
       ansible.builtin.service:
         name: prometheus-nginxlog-exporter.service
         state: restarted
+      when: service_nginxlog_exporter_conf.changed
 - name: node-exporter install
   hosts: all
   become: true
