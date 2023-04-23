@@ -248,6 +248,14 @@
         ds_url: http://prometheus:9090
         access: proxy
         enforce_secure_data: true
+    - name: NGINX Log Metrics
+      community.grafana.grafana_dashboard:
+        url: http://localhost:3000
+        url_username: "admin"
+        url_password: "admin"
+        folder: General
+        dashboard_id: '6482'
+        overwrite: true
     - name: Node Exporter Full
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
@@ -260,14 +268,6 @@
         overwrite: true
         #dashboard_id: '11074'
         #dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
-    - name: NGINX Log Metrics
-      community.grafana.grafana_dashboard:
-        url: http://localhost:3000
-        url_username: "admin"
-        url_password: "admin"
-        folder: General
-        dashboard_id: '6482'
-        overwrite: true
     # - name: Import one more Grafana dashboard
     #   community.grafana.grafana_dashboard:
     #     url: http://localhost:3000
