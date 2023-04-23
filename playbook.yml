@@ -53,7 +53,7 @@
   tasks:
     - name: Install Nginx Log Exporter
       ansible.builtin.apt:
-        deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.9.2/prometheus-nginxlog-exporter_1.9.2_linux_amd64.deb
+        deb: https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download/v1.10.0/prometheus-nginxlog-exporter_1.10.0_linux_amd64.deb
         state: present
     - name: Edit service prometheus-nginxlog-exporter
       template:
@@ -239,8 +239,9 @@
         url_username: "admin"
         url_password: "admin"
         folder: General
+        dashboard_id: '12486'
         #dashboard_id: '11074'
-        dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
+        #dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
     - name: Import one more Grafana dashboard
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
