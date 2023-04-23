@@ -37,6 +37,16 @@
         - nginx
         - git
         - filebeat
+    - name: Set config for nginx
+      copy:
+        src: etc/nginx/nginx.conf
+        dest: /etc/nginx/nginx.conf
+      register: service_nginx_conf
+    - name: restart nginx after reconfig
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: service_nginx_conf.changed
     - name: clear native nginx html_orig
       command: rm -rf /var/www/html_orig
     - name: clear native nginx www folder
@@ -233,7 +243,7 @@
         ds_type: prometheus
         ds_url: http://prometheus:9090
         access: proxy
-    - name: Import Grafana dashboard "1 Node Exporter for Prometheus Dashboard EN 20201010"
+    - name: Node Exporter Full
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
         url_username: "admin"
@@ -242,14 +252,21 @@
         dashboard_id: '12486'
         #dashboard_id: '11074'
         #dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
-    - name: Import one more Grafana dashboard
+    - name: NGINX Log Metrics
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
         url_username: "admin"
         url_password: "admin"
         folder: General
-        dashboard_id: '15489'
-        #dashboard_url: https://grafana.com/api/dashboards/15489/revisions/2/download
+        dashboard_id: '6482'
+    # - name: Import one more Grafana dashboard
+    #   community.grafana.grafana_dashboard:
+    #     url: http://localhost:3000
+    #     url_username: "admin"
+    #     url_password: "admin"
+    #     folder: General
+    #     dashboard_id: '15489'
+    #     #dashboard_url: https://grafana.com/api/dashboards/15489/revisions/2/download
 - name: ElasticSearch installing
   hosts: elastic-hosts
   become: true
