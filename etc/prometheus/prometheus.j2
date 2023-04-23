@@ -16,4 +16,13 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['localhost:9090','localhost:9100','web-1:9100','web-1:4040','web-2:9100','web-2:4040']
+      - targets:
+        - 'localhost:9090'
+        - 'localhost:9100'
+        - 'web-1:9100'
+        - 'web-1:4040'
+        - 'web-2:9100'
+        - 'web-2:4040'
+        - 'kibana:9100'
+        - 'elastic:9100'
+        - 'grafana:9100'
