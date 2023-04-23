@@ -137,7 +137,7 @@
       ansible.builtin.service:
         name: node-exporter.service
         enabled: true
-        state: restarted
+        state: started
 - name: Prometheus Installing
   hosts: prometheus-srv 
   become: true
@@ -192,6 +192,7 @@
       template:
         src: etc/prometheus/prometheus.j2
         dest: /etc/prometheus/prometheus.yml
+      register: prometheus_conf
     - name: create service prometheus
       template:
         src: etc/systemd/system/prometheus.service.j2
@@ -200,6 +201,7 @@
       ansible.builtin.service:
         name: prometheus.service
         state: restarted
+      when: prometheus_conf.changed
 
 - name: Grafana installing
   hosts: grafana-hosts
