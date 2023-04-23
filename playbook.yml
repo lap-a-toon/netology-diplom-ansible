@@ -161,7 +161,8 @@
         - "/var/lib/prometheus"
     - name: Download & Extract prometheus to Temporary directory
       ansible.builtin.unarchive:
-        src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
+        #src: https://github.com/prometheus/prometheus/releases/download/v2.28.1/prometheus-2.28.1.linux-amd64.tar.gz
+        src: https://github.com/prometheus/prometheus/releases/download/v2.43.0/prometheus-2.43.0.linux-amd64.tar.gz
         dest: '{{prometheus_tmp_dir}}'
         remote_src: true
         owner: prometheus
