@@ -256,7 +256,7 @@
         folder: General
         dashboard_id: '12486'
         dashbord_revision: 2
-        overwrite: true
+        #overwrite: true
         #dashboard_id: '11074'
         #dashboard_url: 'https://grafana.com/api/dashboards/11074/revisions/9/download'
     - name: NGINX Log Metrics
@@ -266,7 +266,7 @@
         url_password: "admin"
         folder: General
         dashboard_id: '6482'
-        overwrite: true
+        #overwrite: true
     # - name: Import one more Grafana dashboard
     #   community.grafana.grafana_dashboard:
     #     url: http://localhost:3000
