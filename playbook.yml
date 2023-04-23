@@ -247,7 +247,7 @@
         ds_type: prometheus
         ds_url: http://prometheus:9090
         access: proxy
-        overwrite: true
+        enforce_secure_data: true
     - name: Node Exporter Full
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
