@@ -251,13 +251,18 @@
         ds_url: http://prometheus:9090
         access: proxy
         enforce_secure_data: true
+    - name: Upload metrics DashboardJSON (rewrite 6482)
+      ansible.builtin.copy:
+        src: nginx-log-metrics_rev1.json
+        dest: /etc/prometheus/nginx-log-metrics_rev1.json
     - name: NGINX Log Metrics
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
         url_username: "admin"
         url_password: "admin"
         folder: General
-        dashboard_id: '6482'
+        #dashboard_id: '6482'
+        path: /etc/prometheus/nginx-log-metrics_rev1.json
         overwrite: true
     - name: Node Exporter Full
       community.grafana.grafana_dashboard:
