@@ -9,6 +9,8 @@ elastic_password=qwertyuiop
 prometheus_tmp_dir=/tmp/prometheus
 prometheus_unpacked = /tmp/prometheus/prometheus-2.43.0.linux-amd64
 
+actual_DashboardJSON = nginx-log-metrics_rev2.json
+
 [web]
 web-1
 web-2
