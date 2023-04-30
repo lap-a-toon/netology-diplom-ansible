@@ -238,6 +238,17 @@
       ansible.builtin.copy:
         src: '{{actual_DashboardJSON}}'
         dest: '/etc/prometheus/{{actual_DashboardJSON}}'
+    - name: Create or update a Grafana user
+      community.grafana.grafana_user:
+        url: http://localhost:3000
+        url_username: "admin"
+        url_password: "admin"
+        name: "Guest"
+        email: "someuser@emailme.not"
+        login: "guest"
+        password: "guest"
+        is_admin: true
+        state: present
     - name: NGINX Log Metrics
       community.grafana.grafana_dashboard:
         url: http://localhost:3000
